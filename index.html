@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <title>CADgadgets| Premium Gadgets Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="/style.css" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        neon: {
+                            blue: '#00f3ff',
+                            purple: '#bc13fe',
+                            green: '#0aff0a',
+                            pink: '#ff006e',
+                        },
+                        dark: {
+                            900: '#0a0a0f',
+                            800: '#151520',
+                            700: '#1f1f2e',
+                            600: '#2a2a3c',
+                        }
+                    },
+                    animation: {
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'float': 'float 6s ease-in-out infinite',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        glow: {
+                            '0%': { boxShadow: '0 0 5px #00f3ff, 0 0 10px #00f3ff' },
+                            '100%': { boxShadow: '0 0 20px #00f3ff, 0 0 30px #00f3ff' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    
+</head>
+<body class="font-sans antialiased">
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 glass-panel border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-neon-blue to-neon-purple flex items-center justify-center">
+                        <i data-lucide="cpu" class="h-6 w-6 text-white"></i>
+                    </div>
+                    <span class="font-display text-2xl font-bold tracking-tight text-white">CAD<span class="text-neon-blue">gadgets</span></span>
+                </div>
+
+                <div class="hidden md:flex items-center gap-8">
+                   <a href="/index.html" class="text-gray-400 hover:text-white transition-colors text-sm font-medium">Home</a>
+                    <a href="/compare.html" class="text-gray-400 hover:text-white transition-colors text-sm font-medium">Compare</a>
+                    <a href="/about.html" class="text-gray-400 hover:text-white transition-colors text-sm font-medium">About</a>
+                    <a href="/contact.html" class="text-gray-400 hover:text-white transition-colors text-sm font-medium">Contact</a>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <button class="p-2 hover:bg-white/10 rounded-lg transition-colors relative" onclick="toggleCart()">
+                        <i data-lucide="shopping-cart" class="h-5 w-5 text-gray-300"></i>
+                        <span id="cart-count" class="absolute -top-1 -right-1 bg-neon-blue text-dark-900 text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
+                    </button>
+                    <button class="md:hidden p-2" onclick="toggleMobileMenu()">
+                        <i data-lucide="menu" class="h-6 w-6 text-gray-300"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden glass-panel border-t border-white/10">
+             <div class="px-4 py-4 space-y-2">
+                <a href="index.html" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg">Home</a>
+                <a href="/compare.html" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg">Compare</a>
+                <a href="about.html" class="block px-3 py-2 text-neon-blue font-medium rounded-lg">About</a>
+                <a href="contact.html" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Smart Search -->
+    <section class="relative min-h-screen flex items-center justify-center pt-16 tech-grid overflow-hidden pb-6">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-dark-900/50 to-dark-900"></div>
+        
+        <!-- Animated Background Elements -->
+        <div class="absolute top-20 left-10 w-72 h-72 bg-neon-blue/20 rounded-full filter blur-[100px] animate-pulse-slow"></div>
+        <div class="absolute"></div>
+
+        <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8 animate-slide-up">
+                <span class="w-2 h-2 rounded-full bg-neon-green animate-pulse"></span>
+                <span class="text-sm text-gray-400">New iPhone 15 Pro & Galaxy S24 Ultra in stock</span>
+            </div>
+
+            <h1 class="font-display text-5xl md:text-7xl font-bold mb-6 leading-tight animate-slide-up">
+                Find Your Perfect<br>
+                <span class="gradient-text">Tech Companion</span>
+            </h1>
+
+            <p class="text-black-400 text-lg md:text-xl max-w-2xl mx-auto mb-12 animate-slide-up">
+                Search by brand, series, or model. We stock the latest iPhones, Samsung Galaxy, HP Pavilion, Dell XPS, and more.
+            </p>
+
+            <!-- Smart Search Component -->
+            <div class="glass-panel rounded-2xl p-6 md:p-8 max-w-4xl mx-auto animate-slide-up">
+                <!-- Category Tabs -->
+                <div class="flex gap-2 mb-6 p-1 bg-dark-800 rounded-xl">
+                    <button onclick="setCategory('all')" id="tab-all" class="flex-1 py-3 px-4 rounded-lg text-sm font-medium transition-all bg-dark-700 text-white shadow-lg">
+                        All Gadgets
+                    </button>
+                    <button onclick="setCategory('phones')" id="tab-phones" class="flex-1 py-3 px-4 rounded-lg text-sm font-medium transition-all text-gray-400 hover:text-white">
+                        <i data-lucide="smartphone" class="h-4 w-4 inline mr-2"></i>Phones
+                    </button>
+                    <button onclick="setCategory('laptops')" id="tab-laptops" class="flex-1 py-3 px-4 rounded-lg text-sm font-medium transition-all text-gray-400 hover:text-white">
+                        <i data-lucide="laptop" class="h-4 w-4 inline mr-2"></i>Laptops
+                    </button>
+                </div>
+
+                <!-- Search Input -->
+                <div class="relative mb-6">
+                    <i data-lucide="search" class="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-500"></i>
+                    <input type="text" id="search-input" placeholder="Search iPhone 15, Galaxy S24, Dell XPS, HP Pavilion..." 
+                           class="w-full pl-12 pr-4 py-4 bg-dark-800 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-neon-blue transition-all search-input"
+                           oninput="handleSearch(this.value)">
+                </div>
+
+                <!-- Brand Filters -->
+                <div class="flex flex-wrap gap-3 justify-center mb-6" id="brand-filters">
+                    <button onclick="toggleBrand('apple')" class="brand-btn px-4 text-white py-2 rounded-lg border border-white/10 text-sm font-medium hover:border-neon-blue transition-all" data-brand="apple">
+                        <i data-lucide="apple" class="h-4 w-4 inline mr-2 text-white"></i>Apple
+                    </button>
+                    <button onclick="toggleBrand('samsung')" class="brand-btn px-4 text-white py-2 rounded-lg border border-white/10 text-sm font-medium hover:border-neon-blue transition-all" data-brand="samsung">
+                        Samsung
+                    </button>
+                    <button onclick="toggleBrand('hp')" class="brand-btn px-4  text-white py-2 rounded-lg border border-white/10 text-sm font-medium hover:border-neon-blue transition-all" data-brand="hp">
+                        HP
+                    </button>
+                    <button onclick="toggleBrand('dell')" class="brand-btn px-4 text-white py-2 rounded-lg border border-white/10 text-sm font-medium hover:border-neon-blue transition-all" data-brand="dell">
+                        Dell
+                    </button>
+                    <button onclick="toggleBrand('lenovo')" class="brand-btn px-4 text-white py-2 rounded-lg border border-white/10 text-sm font-medium hover:border-neon-blue transition-all" data-brand="lenovo">
+                        Lenovo
+                    </button>
+                    <button onclick="toggleBrand('asus')" class="brand-btn px-4 py-2 text-white rounded-lg border border-white/10 text-sm font-medium hover:border-neon-blue transition-all" data-brand="asus">
+                        ASUS
+                    </button>
+                </div>
+
+                <!-- Series Quick Select -->
+                <div class="flex gap-2 overflow-x-auto scrollbar-hide pb-2" id="series-filters">
+                    <span class="text-gray-500 text-sm py-2 whitespace-nowrap">Popular:</span>
+                    <button onclick="quickSearch('iPhone 15')" class="px-3 py-1 rounded-full bg-dark-800 border border-white/10 text-xs text-gray-300 hover:border-neon-blue hover:text-white transition-all whitespace-nowrap">iPhone 15</button>
+                    <button onclick="quickSearch('Galaxy S24')" class="px-3 py-1 rounded-full bg-dark-800 border border-white/10 text-xs text-gray-300 hover:border-neon-blue hover:text-white transition-all whitespace-nowrap">Galaxy S24</button>
+                    <button onclick="quickSearch('MacBook')" class="px-3 py-1 rounded-full bg-dark-800 border border-white/10 text-xs text-gray-300 hover:border-neon-blue hover:text-white transition-all whitespace-nowrap">MacBook</button>
+                    <button onclick="quickSearch('XPS')" class="px-3 py-1 rounded-full bg-dark-800 border border-white/10 text-xs text-gray-300 hover:border-neon-blue hover:text-white transition-all whitespace-nowrap">Dell XPS</button>
+                    <button onclick="quickSearch('Pavilion')" class="px-3 py-1 rounded-full bg-dark-800 border border-white/10 text-xs text-gray-300 hover:border-neon-blue hover:text-white transition-all whitespace-nowrap">HP Pavilion</button>
+                    <button onclick="quickSearch('ThinkPad')" class="px-3 py-1 rounded-full bg-dark-800 border border-white/10 text-xs text-gray-300 hover:border-neon-blue hover:text-white transition-all whitespace-nowrap">ThinkPad</button>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="flex justify-center gap-8 md:gap-16 mt-12 text-center animate-slide-up">
+                <div>
+                    <p class="font-display text-3xl font-bold text-white">500+</p>
+                    <p class="text-gray-500 text-sm">Products</p>
+                </div>
+                <div>
+                    <p class="font-display text-3xl font-bold text-white">6</p>
+                    <p class="text-gray-500 text-sm">Top Brands</p>
+                </div>
+                <div>
+                    <p class="font-display text-3xl font-bold text-white">24h</p>
+                    <p class="text-gray-500 text-sm">Delivery</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Results Section -->
+    <section id="results-section" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="font-display text-3xl font-bold text-white">
+                <span id="results-title">Featured Products</span>
+                <span id="results-count" class="text-gray-500 text-lg font-normal ml-2">(12)</span>
+            </h2>
+            
+            <div class="flex gap-2">
+                <select id="sort-select" onchange="sortProducts()" class="bg-dark-800 border border-white/10 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:border-neon-blue">
+                    <option value="featured">Featured</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="newest">Newest First</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div id="products-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Products injected by JavaScript -->
+        </div>
+
+        <!-- No Results State -->
+        <div id="no-results" class="hidden text-center py-16">
+            <i data-lucide="search-x" class="h-16 w-16 text-gray-600 mx-auto mb-4"></i>
+            <h3 class="text-xl font-semibold text-white mb-2">No products found</h3>
+            <p class="text-gray-400">Try adjusting your search or filters</p>
+            <button onclick="clearFilters()" class="mt-4 px-6 py-2 bg-neon-blue text-dark-900 rounded-lg font-semibold hover:bg-cyan-400 transition-colors">
+                Clear Filters
+            </button>
+        </div>
+    </section>
+
+    <!-- Deals Section -->
+    <section id="deals" class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-end mb-8">
+                <div>
+                    <h2 class="font-display text-3xl font-bold text-white mb-2">Hot Deals</h2>
+                    <p class="text-gray-400">Limited time offers on premium devices</p>
+                </div>
+                <button class="text-neon-blue hover:text-cyan-400 transition-colors flex items-center gap-2">
+                    View All <i data-lucide="arrow-right" class="h-4 w-4"></i>
+                </button>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6" id="deals-grid">
+                <!-- Deal cards injected by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Brand Showcase -->
+    <section class="py-16 border-y border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <p class="text-center text-gray-500 text-sm mb-8 tracking-widest uppercase">Authorized Retailer</p>
+            <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-50">
+                <div class="flex items-center gap-2 text-2xl font-bold text-white">
+                    <i data-lucide="apple" class="h-8 w-8"></i> Apple
+                </div>
+                <div class="text-2xl font-bold text-white tracking-tighter">SAMSUNG</div>
+                <div class="text-2xl font-bold text-white font-serif">HP</div>
+                <div class="text-2xl font-bold text-white italic">Dell</div>
+                <div class="text-2xl font-bold text-white">Lenovo</div>
+                <div class="text-2xl font-bold text-white tracking-wide">ASUS</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark-900 border-t border-white/10 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 rounded bg-gradient-to-br from-neon-blue to-neon-purple flex items-center justify-center">
+                            <i data-lucide="cpu" class="h-4 w-4 text-white"></i>
+                        </div>
+                        <span class="font-display text-xl font-bold text-white">CAD</span><span class="text-neon-blue">Gadgets</span></span>
+                    </div>
+                    <p class="text-gray-500 text-sm">Your premier destination for the latest smartphones and laptops. Authorized retailer for all major brands.</p>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-semibold mb-4">Phones</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="#" class="hover:text-neon-blue transition-colors">iPhone 15 Series</a></li>
+                        <li><a href="#" class="hover:text-neon-blue transition-colors">Samsung Galaxy</a></li>
+                        <li><a href="#" class="hover:text-neon-blue transition-colors">Google Pixel</a></li>
+                        <li><a href="#" class="hover:text-neon-blue transition-colors">OnePlus</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-semibold mb-4">Laptops</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="#" class="hover:text-neon-blue transition-colors">MacBook Pro/Air</a></li>
+                        <li><a href="#" class="hover:text-neon-blue transition-colors">Dell XPS</a></li>
+                        <li><a href="#" class="hover:text-neon-blue transition-colors">HP Pavilion</a></li>
+                        <li><a href="#" class="hover:text-neon-blue transition-colors">Lenovo ThinkPad</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-semibold mb-4">Support</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="#" class="hover:text-neon-blue transition-colors">Track Order</a></li>
+                        <li><a href="#" class="hover:text-neon-blue transition-colors">Returns</a></li>
+                        <li><a href="#" class="hover:text-neon-blue transition-colors">Warranty</a></li>
+                        <li><a href="/contact.html" class="hover:text-neon-blue transition-colors">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-gray-600 text-sm">&copy; 2026 CADgadgets. All rights reserved.</p>
+                <div class="flex gap-4">
+                    <a href="#" aria-label="Instagram" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-neon-blue/20 hover:text-neon-blue transition-all">
+                        <div id="instagram-icon" class="w-6 h-6"></div>
+                    </a>
+                    <a href="#" aria-label="TikTok" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-neon-blue/20 hover:text-neon-blue transition-all">
+                        <div id="tiktok-icon" class="w-6 h-6"></div>
+                    </a>
+                    <a href="https://chat.whatsapp.com/KzaujqfWLEI8kYsVvCbSWv?mode=gi_t" aria-label="WhatsApp" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-neon-blue/20 hover:text-neon-blue transition-all">
+                        <div id="whatsapp-icon" class="w-6 h-6"></div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Sidebar -->
+    <div id="cart-sidebar" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="toggleCart()"></div>
+        <div class="absolute right-0 top-0 h-full w-full max-w-md bg-dark-800 border-l border-white/10 transform transition-transform duration-300 translate-x-full" id="cart-panel">
+            <div class="flex flex-col h-full">
+                <div class="flex items-center justify-between p-6 border-b border-white/10">
+                    <h2 class="font-display text-xl font-bold text-white">Your Cart</h2>
+                    <button onclick="toggleCart()" class="p-2 hover:bg-white/10 rounded-lg transition-colors">
+                        <i data-lucide="x" class="h-5 w-5 text-gray-400"></i>
+                    </button>
+                </div>
+                
+                <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4">
+                    <div class="text-center text-gray-500 mt-12">
+                        <i data-lucide="shopping-cart" class="h-16 w-16 mx-auto mb-4 text-white"></i>
+                        <p>Your cart is empty</p>
+                    </div>
+                </div>
+
+                <div class="border-t border-white/10 p-6 space-y-4">
+                    <div class="flex justify-between text-lg font-bold text-white">
+                        <span>Total</span>
+                        <span id="cart-total">$0.00</span>
+                    </div>
+                    <button class="w-full bg-neon-blue text-white py-4 rounded-xl font-bold hover:bg-cyan-400 transition-colors">
+                        Checkout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-8 right-8 bg-dark-800 border border-neon-blue/50 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 transition-all duration-300 opacity-0 translate-y-8 z-50">
+        <i data-lucide="check-circle" class="h-5 w-5 text-neon-blue"></i>
+        <span id="toast-message">Added to cart!</span>
+    </div>
+
+    <script src="/note.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.10.0/lottie.min.js"></script>
+    <script src="lottie-icons.js"></script>
+</body>
+</html>
