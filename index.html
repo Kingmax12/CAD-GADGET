@@ -127,59 +127,59 @@
             </p>
 
             <!-- Smart Search Component -->
-           <div class="glass-panel rounded-2xl p-6  max-w-4xl  mt-3 md:mt-10 lg:mt-16 mx-auto  p-4 md:p-10 lg:p-16 animate-slide-up hero-search-panel">
+            <div class="glass-panel rounded-2xl p-3 sm:p-5 md:p-6 lg:p-8 max-w-[95vw] sm:max-w-4xl mt-3 md:mt-8 lg:mt-12 mx-auto animate-slide-up hero-search-panel">
                 <!-- Category Tabs -->
-                <div class="flex gap-2 mb-6 p-1 bg-dark-800 rounded-xl">
-                    <button onclick="setCategory('all')" id="tab-all" class="flex-1 py-3 px-4 rounded-lg text-sm font-medium transition-all bg-dark-700 text-white shadow-lg">
+                <div class="flex gap-1 sm:gap-2 mb-4 sm:mb-6 p-1 bg-dark-800 rounded-xl">
+                    <button onclick="setCategory('all')" id="tab-all" class="flex-1 py-2 sm:py-3 px-2 sm:px-4 rounded-lg text-[11px] sm:text-sm font-medium transition-all bg-dark-700 text-white shadow-lg">
                         All Gadgets
                     </button>
-                    <button onclick="setCategory('phones')" id="tab-phones" class="flex-1 py-3 px-4 rounded-lg text-sm font-medium transition-all text-gray-400 hover:text-white">
-                        <i data-lucide="smartphone" class="h-4 w-4 inline mr-2"></i>Phones
+                    <button onclick="setCategory('phones')" id="tab-phones" class="flex-1 py-2 sm:py-3 px-2 sm:px-4 rounded-lg text-[11px] sm:text-sm font-medium transition-all text-gray-400 hover:text-white">
+                        <i data-lucide="smartphone" class="h-3.5 w-3.5 sm:h-4 sm:w-4 inline mr-1 sm:mr-2"></i>Phones
                     </button>
-                    <button onclick="setCategory('laptops')" id="tab-laptops" class="flex-1 py-3 px-4 rounded-lg text-sm font-medium transition-all text-gray-400 hover:text-white">
-                        <i data-lucide="laptop" class="h-4 w-4 inline mr-2"></i>Laptops
+                    <button onclick="setCategory('laptops')" id="tab-laptops" class="flex-1 py-2 sm:py-3 px-2 sm:px-4 rounded-lg text-[11px] sm:text-sm font-medium transition-all text-gray-400 hover:text-white">
+                        <i data-lucide="laptop" class="h-3.5 w-3.5 sm:h-4 sm:w-4 inline mr-1 sm:mr-2"></i>Laptops
                     </button>
                 </div>
 
                 <!-- Search Input -->
-                <div class="relative mb-6">
-                    <i data-lucide="search" class="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-500"></i>
-                    <input type="text" id="search-input" placeholder="Search iPhone 15, Galaxy S24, Dell XPS, HP Pavilion..." 
-                           class="w-full pl-12 pr-4 py-4 bg-dark-800 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-neon-blue transition-all search-input"
+                <div class="relative mb-4 sm:mb-6">
+                    <i data-lucide="search" class="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-gray-500"></i>
+                    <input type="text" id="search-input" placeholder="Search iPhone 15, Galaxy S24..." 
+                           class="w-full pl-9 sm:pl-12 pr-3 sm:pr-4 py-3 sm:py-4 bg-dark-800 border border-white/10 rounded-xl text-sm sm:text-base text-white placeholder-gray-500 focus:outline-none focus:border-neon-blue transition-all search-input"
                            oninput="handleSearch(this.value)">
                 </div>
 
                 <!-- Brand Filters -->
-                <div class="flex flex-wrap gap-3 justify-center mb-6" id="brand-filters">
-                    <button onclick="toggleBrand('apple')" class="brand-btn px-4 text-white py-2 rounded-lg border border-white/10 text-sm font-medium hover:border-neon-blue transition-all" data-brand="apple">
-                        <i data-lucide="apple" class="h-4 w-4 inline mr-2 text-white"></i>Apple
+                <div class="flex flex-wrap gap-2 sm:gap-3 justify-center mb-4 sm:mb-6" id="brand-filters">
+                    <button onclick="toggleBrand('apple')" class="brand-btn px-2.5 sm:px-4 text-white py-1.5 sm:py-2 rounded-lg border border-white/10 text-[11px] sm:text-sm font-medium hover:border-neon-blue transition-all" data-brand="apple">
+                        <i data-lucide="apple" class="h-3.5 w-3.5 sm:h-4 sm:w-4 inline mr-1 sm:mr-2 text-white"></i>Apple
                     </button>
-                    <button onclick="toggleBrand('samsung')" class="brand-btn px-4 text-white py-2 rounded-lg border border-white/10 text-sm font-medium hover:border-neon-blue transition-all" data-brand="samsung">
+                    <button onclick="toggleBrand('samsung')" class="brand-btn px-2.5 sm:px-4 text-white py-1.5 sm:py-2 rounded-lg border border-white/10 text-[11px] sm:text-sm font-medium hover:border-neon-blue transition-all" data-brand="samsung">
                         Samsung
                     </button>
-                    <button onclick="toggleBrand('hp')" class="brand-btn px-4  text-white py-2 rounded-lg border border-white/10 text-sm font-medium hover:border-neon-blue transition-all" data-brand="hp">
+                    <button onclick="toggleBrand('hp')" class="brand-btn px-2.5 sm:px-4 text-white py-1.5 sm:py-2 rounded-lg border border-white/10 text-[11px] sm:text-sm font-medium hover:border-neon-blue transition-all" data-brand="hp">
                         HP
                     </button>
-                    <button onclick="toggleBrand('dell')" class="brand-btn px-4 text-white py-2 rounded-lg border border-white/10 text-sm font-medium hover:border-neon-blue transition-all" data-brand="dell">
+                    <button onclick="toggleBrand('dell')" class="brand-btn px-2.5 sm:px-4 text-white py-1.5 sm:py-2 rounded-lg border border-white/10 text-[11px] sm:text-sm font-medium hover:border-neon-blue transition-all" data-brand="dell">
                         Dell
                     </button>
-                    <button onclick="toggleBrand('lenovo')" class="brand-btn px-4 text-white py-2 rounded-lg border border-white/10 text-sm font-medium hover:border-neon-blue transition-all" data-brand="lenovo">
+                    <button onclick="toggleBrand('lenovo')" class="brand-btn px-2.5 sm:px-4 text-white py-1.5 sm:py-2 rounded-lg border border-white/10 text-[11px] sm:text-sm font-medium hover:border-neon-blue transition-all" data-brand="lenovo">
                         Lenovo
                     </button>
-                    <button onclick="toggleBrand('asus')" class="brand-btn px-4 py-2 text-white rounded-lg border border-white/10 text-sm font-medium hover:border-neon-blue transition-all" data-brand="asus">
+                    <button onclick="toggleBrand('asus')" class="brand-btn px-2.5 sm:px-4 py-1.5 sm:py-2 text-white rounded-lg border border-white/10 text-[11px] sm:text-sm font-medium hover:border-neon-blue transition-all" data-brand="asus">
                         ASUS
                     </button>
                 </div>
 
                 <!-- Series Quick Select -->
-                <div class="flex gap-2 overflow-x-auto scrollbar-hide pb-2" id="series-filters">
-                    <span class="text-gray-500 text-sm py-2 whitespace-nowrap">Popular:</span>
-                    <button onclick="quickSearch('iPhone 15')" class="px-3 py-1 rounded-full bg-dark-800 border border-white/10 text-xs text-gray-300 hover:border-neon-blue hover:text-white transition-all whitespace-nowrap">iPhone 15</button>
-                    <button onclick="quickSearch('Galaxy S24')" class="px-3 py-1 rounded-full bg-dark-800 border border-white/10 text-xs text-gray-300 hover:border-neon-blue hover:text-white transition-all whitespace-nowrap">Galaxy S24</button>
-                    <button onclick="quickSearch('MacBook')" class="px-3 py-1 rounded-full bg-dark-800 border border-white/10 text-xs text-gray-300 hover:border-neon-blue hover:text-white transition-all whitespace-nowrap">MacBook</button>
-                    <button onclick="quickSearch('XPS')" class="px-3 py-1 rounded-full bg-dark-800 border border-white/10 text-xs text-gray-300 hover:border-neon-blue hover:text-white transition-all whitespace-nowrap">Dell XPS</button>
-                    <button onclick="quickSearch('Pavilion')" class="px-3 py-1 rounded-full bg-dark-800 border border-white/10 text-xs text-gray-300 hover:border-neon-blue hover:text-white transition-all whitespace-nowrap">HP Pavilion</button>
-                    <button onclick="quickSearch('ThinkPad')" class="px-3 py-1 rounded-full bg-dark-800 border border-white/10 text-xs text-gray-300 hover:border-neon-blue hover:text-white transition-all whitespace-nowrap">ThinkPad</button>
+                <div class="flex gap-1.5 sm:gap-2 overflow-x-auto scrollbar-hide pb-1 sm:pb-2" id="series-filters">
+                    <span class="text-gray-500 text-[10px] sm:text-sm py-1.5 sm:py-2 whitespace-nowrap">Popular:</span>
+                    <button onclick="quickSearch('iPhone 15')" class="px-2 sm:px-3 py-1 rounded-full bg-dark-800 border border-white/10 text-[10px] sm:text-xs text-gray-300 hover:border-neon-blue hover:text-white transition-all whitespace-nowrap">iPhone 15</button>
+                    <button onclick="quickSearch('Galaxy S24')" class="px-2 sm:px-3 py-1 rounded-full bg-dark-800 border border-white/10 text-[10px] sm:text-xs text-gray-300 hover:border-neon-blue hover:text-white transition-all whitespace-nowrap">Galaxy S24</button>
+                    <button onclick="quickSearch('MacBook')" class="px-2 sm:px-3 py-1 rounded-full bg-dark-800 border border-white/10 text-[10px] sm:text-xs text-gray-300 hover:border-neon-blue hover:text-white transition-all whitespace-nowrap">MacBook</button>
+                    <button onclick="quickSearch('XPS')" class="px-2 sm:px-3 py-1 rounded-full bg-dark-800 border border-white/10 text-[10px] sm:text-xs text-gray-300 hover:border-neon-blue hover:text-white transition-all whitespace-nowrap">Dell XPS</button>
+                    <button onclick="quickSearch('Pavilion')" class="px-2 sm:px-3 py-1 rounded-full bg-dark-800 border border-white/10 text-[10px] sm:text-xs text-gray-300 hover:border-neon-blue hover:text-white transition-all whitespace-nowrap">HP Pavilion</button>
+                    <button onclick="quickSearch('ThinkPad')" class="px-2 sm:px-3 py-1 rounded-full bg-dark-800 border border-white/10 text-[10px] sm:text-xs text-gray-300 hover:border-neon-blue hover:text-white transition-all whitespace-nowrap">ThinkPad</button>
                 </div>
             </div>
 
