@@ -1,0 +1,1242 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TechHaven - Next-Gen Gadget Store</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts: Inter -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet" />
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+            colors: {
+              brand: {
+                50: "#f0f7ff",
+                100: "#e0effe",
+                500: "#3b82f6",
+                600: "#2563eb",
+                700: "#1d4ed8",
+                900: "#1e3a8a",
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      /* Custom scrollbars and sleek animations */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 9999px;
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: #334155;
+      }
+      .fade-in {
+        animation: fadeIn 0.25s ease-in-out;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .modal-backdrop {
+        background-color: rgba(15, 23, 42, 0.65);
+        backdrop-filter: blur(6px);
+      }
+    </style>
+  </head>
+  <body
+    class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200">
+    <!-- Toast Notification Container -->
+    <div
+      id="toast-container"
+      class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Header Section -->
+    <header
+      class="sticky top-0 z-30 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16 gap-4">
+          <!-- Brand Logo -->
+          <div
+            class="flex items-center gap-2 cursor-pointer"
+            onclick="filterCategory('All')">
+            <div
+              class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-500 flex items-center justify-center text-white shadow-md shadow-brand-500/20">
+              <i data-lucide="cpu" class="w-6 h-6"></i>
+            </div>
+            <span
+              class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-brand-600 to-indigo-600 dark:from-brand-500 dark:to-indigo-400 bg-clip-text text-transparent">
+              TechHaven
+            </span>
+          </div>
+
+          <!-- Search Bar -->
+          <div class="flex-1 max-w-md hidden md:block">
+            <div class="relative">
+              <i
+                data-lucide="search"
+                class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+              <input
+                type="text"
+                id="search-input"
+                placeholder="Search laptops, phones, headphones..."
+                oninput="handleSearch(this.value)"
+                class="w-full pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border border-transparent dark:border-slate-700 rounded-full text-sm focus:outline-none focus:border-brand-500 dark:focus:border-brand-500 focus:bg-white dark:focus:bg-slate-900 transition-all" />
+            </div>
+          </div>
+
+          <!-- Actions: Auth & Cart -->
+          <div class="flex items-center gap-3">
+            <!-- Dark mode toggle -->
+            <button
+              onclick="toggleDarkMode()"
+              class="p-2.5 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition">
+              <i
+                data-lucide="moon"
+                id="theme-icon-dark"
+                class="w-5 h-5 hidden"></i>
+              <i data-lucide="sun" id="theme-icon-light" class="w-5 h-5"></i>
+            </button>
+
+            <!-- User Header Controls (Dynamic Login vs User Badge) -->
+            <div id="user-header-area">
+              <!-- Populated dynamically via JS -->
+            </div>
+
+            <!-- Cart Button -->
+            <button
+              onclick="openCartDrawer()"
+              class="relative p-2.5 bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 hover:bg-brand-100 dark:hover:bg-brand-900/50 rounded-full transition flex items-center justify-center">
+              <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+              <span
+                id="cart-badge"
+                class="absolute -top-1 -right-1 bg-red-500 text-white text-[11px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white dark:border-slate-900 hidden"
+                >0</span
+              >
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobile Search Input Bar -->
+        <div class="pb-3 md:hidden">
+          <div class="relative">
+            <i
+              data-lucide="search"
+              class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+            <input
+              type="text"
+              placeholder="Search tech gadgets..."
+              oninput="handleSearch(this.value)"
+              class="w-full pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border border-transparent dark:border-slate-700 rounded-full text-sm focus:outline-none focus:border-brand-500" />
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Deferred Auth Explainer Banner (Informative Badge for Users) -->
+      <div
+        class="mb-6 p-4 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white shadow-lg flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div class="p-2.5 bg-white/20 rounded-xl backdrop-blur-sm">
+            <i data-lucide="shield-check" class="w-6 h-6 text-white"></i>
+          </div>
+          <div>
+            <h3 class="font-semibold text-sm sm:text-base">
+              Seamless Guest Shopping Experience
+            </h3>
+            <p class="text-xs sm:text-sm text-blue-100">
+              Explore, add gadgets to cart, and compare freely. No login
+              required until checkout!
+            </p>
+          </div>
+        </div>
+        <div
+          class="flex items-center gap-2 text-xs bg-white/10 px-3 py-1.5 rounded-full border border-white/20 shrink-0">
+          <i data-lucide="zap" class="w-3.5 h-3.5 text-yellow-300"></i>
+          <span>Instant Guest Cart</span>
+        </div>
+      </div>
+
+      <!-- Category Filters Navigation -->
+      <div
+        class="flex items-center gap-2 overflow-x-auto pb-4 mb-6 scrollbar-none"
+        id="category-pills">
+        <!-- Populated via JS -->
+      </div>
+
+      <!-- Product Grid Header -->
+      <div class="flex items-center justify-between mb-6">
+        <h2
+          id="catalog-title"
+          class="text-xl font-bold text-slate-800 dark:text-slate-100">
+          Featured Gadgets
+        </h2>
+        <span
+          id="product-count"
+          class="text-xs font-medium text-slate-500 dark:text-slate-400"
+          >Showing 8 products</span
+        >
+      </div>
+
+      <div
+        id="product-grid"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <!-- Products render dynamically here -->
+      </div>
+    </main>
+
+    <footer
+      class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 mt-12 transition-colors">
+      <div
+        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500 dark:text-slate-400">
+        <div class="flex items-center gap-2">
+          <i data-lucide="cpu" class="w-4 h-4 text-brand-600"></i>
+          <span class="font-bold text-slate-700 dark:text-slate-300"
+            >TechHaven E-Commerce</span
+          >
+          &copy; 2026. All rights reserved.
+        </div>
+        <div class="flex gap-6">
+          <a href="#" class="hover:text-brand-600 transition">Privacy Policy</a>
+          <a href="#" class="hover:text-brand-600 transition"
+            >Terms of Service</a
+          >
+          <a href="#" class="hover:text-brand-600 transition"
+            >Guest Cart Info</a
+          >
+        </div>
+      </div>
+    </footer>
+
+    <div
+      id="cart-drawer-backdrop"
+      class="fixed inset-0 z-40 modal-backdrop hidden opacity-0 transition-opacity duration-300"
+      onclick="closeCartDrawer()"></div>
+    <div
+      id="cart-drawer"
+      class="fixed top-0 right-0 z-50 w-full max-w-md h-full bg-white dark:bg-slate-900 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+      <!-- Drawer Header -->
+      <div
+        class="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i data-lucide="shopping-cart" class="w-5 h-5 text-brand-600"></i>
+          <h3 class="font-bold text-slate-800 dark:text-slate-100">
+            Your Cart
+          </h3>
+          <span
+            id="cart-drawer-count"
+            class="text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-2 py-0.5 rounded-full font-medium"
+            >(0 items)</span
+          >
+        </div>
+        <button
+          onclick="closeCartDrawer()"
+          class="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Cart Items List -->
+      <div
+        id="cart-items-container"
+        class="flex-1 overflow-y-auto p-4 space-y-4">
+        <!-- Cart items or empty state -->
+      </div>
+
+      <!-- Drawer Footer / Total & Checkout -->
+      <div
+        class="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 space-y-3">
+        <div
+          class="flex justify-between text-sm text-slate-500 dark:text-slate-400">
+          <span>Subtotal</span>
+          <span
+            id="cart-subtotal"
+            class="font-semibold text-slate-800 dark:text-slate-100"
+            >$0.00</span
+          >
+        </div>
+        <div
+          class="flex justify-between text-sm text-slate-500 dark:text-slate-400">
+          <span>Estimated Shipping</span>
+          <span class="text-green-600 font-medium">Free</span>
+        </div>
+        <div
+          class="flex justify-between text-base font-bold text-slate-800 dark:text-slate-100 pt-2 border-t border-slate-200 dark:border-slate-800">
+          <span>Total</span>
+          <span id="cart-total" class="text-brand-600 dark:text-brand-400"
+            >$0.00</span
+          >
+        </div>
+
+        <!-- Checkout Trigger Button -->
+        <button
+          onclick="initiateCheckoutFlow()"
+          class="w-full py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl shadow-lg shadow-brand-500/25 flex items-center justify-center gap-2 transition active:scale-[0.99]">
+          <span>Proceed to Checkout</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+
+        <p
+          class="text-[11px] text-center text-slate-400 dark:text-slate-500 flex items-center justify-center gap-1">
+          <i data-lucide="lock" class="w-3 h-3"></i> Encrypted 256-bit Secure
+          Checkout
+        </p>
+      </div>
+    </div>
+
+    <div
+      id="product-modal-backdrop"
+      class="fixed inset-0 z-50 modal-backdrop hidden items-center justify-center p-4">
+      <div
+        id="product-modal"
+        class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl max-w-2xl w-full p-6 shadow-2xl relative fade-in max-h-[90vh] overflow-y-auto">
+        <button
+          onclick="closeProductModal()"
+          class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+        <div id="product-modal-content">
+          <!-- Filled dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="auth-modal-backdrop"
+      class="fixed inset-0 z-50 modal-backdrop hidden items-center justify-center p-4">
+      <div
+        class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative fade-in">
+        <button
+          onclick="closeAuthModal()"
+          class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+
+        <!-- Auth Header -->
+        <div class="text-center mb-6">
+          <div
+            class="w-12 h-12 bg-brand-50 dark:bg-brand-900/40 text-brand-600 dark:text-brand-400 rounded-2xl flex items-center justify-center mx-auto mb-3">
+            <i data-lucide="lock" class="w-6 h-6"></i>
+          </div>
+          <h3
+            id="auth-modal-title"
+            class="text-xl font-bold text-slate-800 dark:text-slate-100">
+            Sign in to complete order
+          </h3>
+          <p
+            id="auth-modal-subtitle"
+            class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+            Your cart items will be saved to your profile!
+          </p>
+        </div>
+
+        <!-- Quick 1-Click Social Auth -->
+        <button
+          onclick="simulateGoogleLogin()"
+          class="w-full py-2.5 px-4 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-xl font-medium text-sm flex items-center justify-center gap-3 transition mb-4">
+          <svg class="w-4 h-4" viewBox="0 0 24 24">
+            <path
+              fill="#4285F4"
+              d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+            <path
+              fill="#34A853"
+              d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+            <path
+              fill="#FBBC05"
+              d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+            <path
+              fill="#EA4335"
+              d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
+          </svg>
+          <span>Continue with Google</span>
+        </button>
+
+        <div class="relative flex items-center justify-center mb-4">
+          <div
+            class="border-t border-slate-200 dark:border-slate-800 w-full"></div>
+          <span
+            class="bg-white dark:bg-slate-900 px-3 text-[11px] text-slate-400 uppercase tracking-wider font-semibold"
+            >Or email</span
+          >
+        </div>
+
+        <!-- Auth Form -->
+        <form
+          id="auth-form"
+          onsubmit="handleAuthSubmit(event)"
+          class="space-y-3">
+          <div id="name-field-group" class="hidden">
+            <label
+              class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1"
+              >Full Name</label
+            >
+            <input
+              type="text"
+              id="auth-name"
+              placeholder="John Doe"
+              class="w-full px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:border-brand-500" />
+          </div>
+          <div>
+            <label
+              class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1"
+              >Email Address</label
+            >
+            <input
+              type="email"
+              id="auth-email"
+              required
+              placeholder="name@example.com"
+              value="customer@techhaven.com"
+              class="w-full px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:border-brand-500" />
+          </div>
+          <div>
+            <label
+              class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1"
+              >Password</label
+            >
+            <input
+              type="password"
+              id="auth-password"
+              required
+              placeholder="••••••••"
+              value="password123"
+              class="w-full px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:border-brand-500" />
+          </div>
+
+          <button
+            type="submit"
+            id="auth-submit-btn"
+            class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl shadow-md shadow-brand-500/20 text-sm transition mt-2">
+            Sign In & Continue
+          </button>
+        </form>
+
+        <!-- Toggle Mode -->
+        <div
+          class="text-center mt-4 text-xs text-slate-500 dark:text-slate-400">
+          <span id="auth-toggle-text">Don't have an account?</span>
+          <button
+            onclick="toggleAuthMode()"
+            id="auth-toggle-btn"
+            class="font-bold text-brand-600 dark:text-brand-400 hover:underline ml-1">
+            Create Account
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="checkout-modal-backdrop"
+      class="fixed inset-0 z-50 modal-backdrop hidden items-center justify-center p-4">
+      <div
+        class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl relative fade-in max-h-[90vh] overflow-y-auto">
+        <button
+          onclick="closeCheckoutModal()"
+          class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+
+        <div
+          class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-200 dark:border-slate-800">
+          <div
+            class="p-2.5 bg-green-100 dark:bg-green-900/40 text-green-600 dark:text-green-400 rounded-xl">
+            <i data-lucide="check-circle-2" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100">
+              Checkout & Delivery
+            </h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400">
+              Logged in as
+              <span
+                id="checkout-user-email"
+                class="font-semibold text-brand-600"
+                >user@example.com</span
+              >
+            </p>
+          </div>
+        </div>
+
+        <!-- Checkout Form -->
+        <form onsubmit="handlePlaceOrder(event)" class="space-y-4">
+          <div>
+            <h4
+              class="text-xs font-bold uppercase text-slate-400 tracking-wider mb-2">
+              1. Shipping Address
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <input
+                type="text"
+                placeholder="Street Address"
+                required
+                class="sm:col-span-2 px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:border-brand-500"
+                value="742 Evergreen Terrace" />
+              <input
+                type="text"
+                placeholder="City"
+                required
+                class="px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:border-brand-500"
+                value="Springfield" />
+              <input
+                type="text"
+                placeholder="Phone Number"
+                required
+                class="px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:border-brand-500"
+                value="+1 (555) 019-2834" />
+            </div>
+          </div>
+
+          <div>
+            <h4
+              class="text-xs font-bold uppercase text-slate-400 tracking-wider mb-2">
+              2. Payment Method
+            </h4>
+            <div class="grid grid-cols-2 gap-3">
+              <label
+                class="p-3 border-2 border-brand-500 bg-brand-50/50 dark:bg-brand-900/20 rounded-xl flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="payment"
+                  checked
+                  class="text-brand-600" />
+                <div class="text-xs font-semibold">Credit Card / Debit</div>
+              </label>
+              <label
+                class="p-3 border border-slate-200 dark:border-slate-800 rounded-xl flex items-center gap-2 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800">
+                <input type="radio" name="payment" class="text-brand-600" />
+                <div class="text-xs font-semibold">Pay on Delivery</div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Order Summary Preview -->
+          <div
+            class="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl space-y-2">
+            <div class="flex justify-between text-xs text-slate-500">
+              <span>Items Subtotal</span>
+              <span
+                id="checkout-subtotal"
+                class="font-medium text-slate-800 dark:text-slate-200"
+                >$0.00</span
+              >
+            </div>
+            <div class="flex justify-between text-xs text-slate-500">
+              <span>Shipping Fee</span>
+              <span class="text-green-600 font-medium">FREE</span>
+            </div>
+            <div
+              class="flex justify-between text-sm font-bold text-slate-800 dark:text-slate-100 pt-2 border-t border-slate-200 dark:border-slate-700">
+              <span>Total Payable</span>
+              <span
+                id="checkout-total"
+                class="text-brand-600 dark:text-brand-400"
+                >$0.00</span
+              >
+            </div>
+          </div>
+          <button
+            type="submit"
+            class="w-full py-3.5 bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-700 hover:to-indigo-700 text-white font-bold rounded-xl shadow-lg shadow-brand-500/25 transition">
+            Confirm & Pay Order
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      // Product Catalog Database
+      const PRODUCTS = [
+        {
+          id: "p1",
+          name: 'ProBook Ultra 16" Laptop',
+          category: "Laptops",
+          price: 1299.99,
+          rating: 4.8,
+          reviews: 142,
+          image:
+            "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=600&q=80",
+          description:
+            "Blazing fast M3 silicon laptop with 32GB RAM, 1TB SSD, and liquid retina XDR display.",
+          badge: "Top Choice",
+        },
+        {
+          id: "p2",
+          name: "Apex Phone 15 Pro",
+          category: "Phones",
+          price: 999.0,
+          rating: 4.9,
+          reviews: 310,
+          image:
+            "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=600&q=80",
+          description:
+            "Titanium build, 120Hz OLED screen, and 108MP triple lens camera system.",
+          badge: "Best Seller",
+        },
+        {
+          id: "p3",
+          name: "Acoustic Max Wireless ANC",
+          category: "Audio",
+          price: 279.5,
+          rating: 4.7,
+          reviews: 98,
+          image:
+            "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80",
+          description:
+            "Active noise cancellation headphones with 40-hour battery life and spatial audio support.",
+          badge: "Hot",
+        },
+        {
+          id: "p4",
+          name: "Pulse Smartwatch Series 8",
+          category: "Smartwatches",
+          price: 229.0,
+          rating: 4.6,
+          reviews: 76,
+          image:
+            "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80",
+          description:
+            "ECG monitoring, workout tracking, sleep diagnostics, and crisp AMOLED screen.",
+          badge: null,
+        },
+        {
+          id: "p5",
+          name: "SoundPod Mini Earbuds",
+          category: "Audio",
+          price: 89.99,
+          rating: 4.5,
+          reviews: 215,
+          image:
+            "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=600&q=80",
+          description:
+            "Compact wireless earbuds with touch controls and water-resistant nano coating.",
+          badge: "New",
+        },
+        {
+          id: "p6",
+          name: "Gaming Rig X-1 Ultra",
+          category: "Laptops",
+          price: 1899.0,
+          rating: 4.9,
+          reviews: 64,
+          image:
+            "https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&w=600&q=80",
+          description:
+            "RTX 4080 graphics, 240Hz refresh rate display, and custom mechanical key switches.",
+          badge: "High End",
+        },
+        {
+          id: "p7",
+          name: "FitTrack Band 4",
+          category: "Smartwatches",
+          price: 49.99,
+          rating: 4.3,
+          reviews: 520,
+          image:
+            "https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?auto=format&fit=crop&w=600&q=80",
+          description:
+            "Lightweight fitness tracker with step count, heart rate monitoring, and 14-day battery.",
+          badge: "Budget",
+        },
+        {
+          id: "p8",
+          name: "Zenith Fold Smartphone",
+          category: "Phones",
+          price: 1499.0,
+          rating: 4.7,
+          reviews: 43,
+          image:
+            "https://images.unsplash.com/photo-1565849904461-04a58ad377e0?auto=format&fit=crop&w=600&q=80",
+          description:
+            "Revolutionary foldable glass screen phone with multi-window multitasking features.",
+          badge: "Innovator",
+        },
+      ];
+
+      const CATEGORIES = ["All", "Laptops", "Phones", "Audio", "Smartwatches"];
+
+      // App State
+      let cart = [];
+      let currentUser = null; // null means Guest Mode
+      let activeCategory = "All";
+      let searchQuery = "";
+      let authMode = "login"; // 'login' or 'signup'
+      let pendingCheckout = false; // Tracks if user clicked checkout as a guest
+
+      // Initialization
+      window.onload = function () {
+        loadCartFromStorage();
+        loadUserFromStorage();
+        renderCategoryPills();
+        renderProducts();
+        renderUserHeader();
+        updateCartUI();
+        lucide.createIcons();
+      };
+
+      // --- STREAMING_CHUNK:LocalStorage Sync Logic ---
+      function loadCartFromStorage() {
+        try {
+          const savedCart = localStorage.getItem("techhaven_cart");
+          if (savedCart) cart = JSON.parse(savedCart);
+        } catch (e) {
+          cart = [];
+        }
+      }
+
+      function saveCartToStorage() {
+        localStorage.setItem("techhaven_cart", JSON.stringify(cart));
+        updateCartUI();
+      }
+
+      function loadUserFromStorage() {
+        try {
+          const savedUser = localStorage.getItem("techhaven_user");
+          if (savedUser) currentUser = JSON.parse(savedUser);
+        } catch (e) {
+          currentUser = null;
+        }
+      }
+
+      function saveUserToStorage(user) {
+        currentUser = user;
+        if (user) {
+          localStorage.setItem("techhaven_user", JSON.stringify(user));
+        } else {
+          localStorage.removeItem("techhaven_user");
+        }
+        renderUserHeader();
+      }
+
+      // --- STREAMING_CHUNK:UI Rendering Functions ---
+      function renderCategoryPills() {
+        const container = document.getElementById("category-pills");
+        container.innerHTML = CATEGORIES.map((cat) => {
+          const isActive = cat === activeCategory;
+          const activeClass = isActive
+            ? "bg-brand-600 text-white shadow-md shadow-brand-500/20"
+            : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700";
+          return `
+          <button 
+            onclick="filterCategory('${cat}')" 
+            class="px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${activeClass}"
+          >
+            ${cat}
+          </button>
+        `;
+        }).join("");
+      }
+
+      function renderProducts() {
+        const grid = document.getElementById("product-grid");
+        let filtered = PRODUCTS.filter((p) => {
+          const matchesCategory =
+            activeCategory === "All" || p.category === activeCategory;
+          const matchesSearch =
+            p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            p.description.toLowerCase().includes(searchQuery.toLowerCase());
+          return matchesCategory && matchesSearch;
+        });
+
+        document.getElementById("catalog-title").textContent =
+          activeCategory === "All"
+            ? "Featured Gadgets"
+            : `${activeCategory} Collection`;
+        document.getElementById("product-count").textContent =
+          `Showing ${filtered.length} products`;
+
+        if (filtered.length === 0) {
+          grid.innerHTML = `
+          <div class="col-span-full py-12 text-center">
+            <i data-lucide="package-search" class="w-12 h-12 text-slate-400 mx-auto mb-3"></i>
+            <h3 class="font-bold text-slate-700 dark:text-slate-300">No gadgets found</h3>
+            <p class="text-xs text-slate-500 mt-1">Try adjusting your search query or filter settings.</p>
+          </div>
+        `;
+          lucide.createIcons();
+          return;
+        }
+
+        grid.innerHTML = filtered
+          .map(
+            (product) => `
+        <div class="bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group">
+          
+          <!-- Image Container -->
+          <div class="relative aspect-square overflow-hidden bg-slate-100 dark:bg-slate-900 cursor-pointer" onclick="openProductModal('${product.id}')">
+            <img 
+              src="${product.image}" 
+              alt="${product.name}" 
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              onerror="this.src='https://placehold.co/600x600/1e293b/ffffff?text=${encodeURIComponent(product.name)}'"
+            />
+            ${product.badge ? `<span class="absolute top-3 left-3 bg-brand-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">${product.badge}</span>` : ""}
+          </div>
+
+          <!-- Product Info -->
+          <div class="p-4 flex-1 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between text-xs text-slate-400 mb-1">
+                <span>${product.category}</span>
+                <span class="flex items-center text-amber-500 font-medium">
+                  <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 stroke-amber-400 mr-1"></i>
+                  ${product.rating} (${product.reviews})
+                </span>
+              </div>
+              <h3 
+                onclick="openProductModal('${product.id}')"
+                class="font-bold text-slate-800 dark:text-slate-100 hover:text-brand-600 dark:hover:text-brand-400 transition cursor-pointer text-sm line-clamp-1"
+              >
+                ${product.name}
+              </h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 mt-1">${product.description}</p>
+            </div>
+
+            <!-- Price & Add Button -->
+            <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between">
+              <div>
+                <span class="text-xs text-slate-400 block">Price</span>
+                <span class="text-base font-extrabold text-slate-900 dark:text-white">$${product.price.toFixed(2)}</span>
+              </div>
+              
+              <button 
+                onclick="addToCart('${product.id}')" 
+                class="px-3.5 py-2 bg-brand-600 hover:bg-brand-700 active:scale-95 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition shadow-sm"
+              >
+                <i data-lucide="plus" class="w-4 h-4"></i>
+                <span>Add</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      `,
+          )
+          .join("");
+
+        lucide.createIcons();
+      }
+
+      function renderUserHeader() {
+        const container = document.getElementById("user-header-area");
+        if (currentUser) {
+          container.innerHTML = `
+          <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 py-1.5 px-3 rounded-full">
+              <div class="w-7 h-7 rounded-full bg-brand-600 text-white font-bold text-xs flex items-center justify-center">
+                ${currentUser.name.charAt(0).toUpperCase()}
+              </div>
+              <span class="text-xs font-semibold text-slate-700 dark:text-slate-200 max-w-[100px] truncate hidden sm:inline">${currentUser.name}</span>
+            </div>
+            <button onclick="logoutUser()" title="Log out" class="p-2 text-slate-400 hover:text-red-500 rounded-full transition">
+              <i data-lucide="log-out" class="w-4 h-4"></i>
+            </button>
+          </div>
+        `;
+        } else {
+          container.innerHTML = `
+          <button 
+            onclick="openAuthModal('login')" 
+            class="px-4 py-2 text-xs font-semibold text-brand-600 dark:text-brand-400 hover:bg-brand-50 dark:hover:bg-slate-800 rounded-full transition border border-brand-200 dark:border-brand-900"
+          >
+            Log In / Register
+          </button>
+        `;
+        }
+        lucide.createIcons();
+      }
+
+      // --- STREAMING_CHUNK:Cart Operations & Drawer ---
+      function addToCart(productId) {
+        const product = PRODUCTS.find((p) => p.id === productId);
+        if (!product) return;
+
+        const existingIndex = cart.findIndex((item) => item.id === productId);
+        if (existingIndex > -1) {
+          cart[existingIndex].quantity += 1;
+        } else {
+          cart.push({ ...product, quantity: 1 });
+        }
+
+        saveCartToStorage();
+        showToast(`Added "${product.name}" to your cart!`);
+      }
+
+      function updateQuantity(productId, delta) {
+        const item = cart.find((i) => i.id === productId);
+        if (!item) return;
+
+        item.quantity += delta;
+        if (item.quantity <= 0) {
+          cart = cart.filter((i) => i.id !== productId);
+        }
+        saveCartToStorage();
+      }
+
+      function updateCartUI() {
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        const subtotal = cart.reduce(
+          (sum, item) => sum + item.price * item.quantity,
+          0,
+        );
+
+        // Badge
+        const badge = document.getElementById("cart-badge");
+        if (totalItems > 0) {
+          badge.textContent = totalItems;
+          badge.classList.remove("hidden");
+        } else {
+          badge.classList.add("hidden");
+        }
+
+        document.getElementById("cart-drawer-count").textContent =
+          `(${totalItems} items)`;
+        document.getElementById("cart-subtotal").textContent =
+          `$${subtotal.toFixed(2)}`;
+        document.getElementById("cart-total").textContent =
+          `$${subtotal.toFixed(2)}`;
+
+        // Render cart items list inside drawer
+        const container = document.getElementById("cart-items-container");
+        if (cart.length === 0) {
+          container.innerHTML = `
+          <div class="text-center py-12 text-slate-400">
+            <i data-lucide="shopping-bag" class="w-12 h-12 mx-auto mb-2 opacity-50"></i>
+            <p class="text-sm font-semibold">Your cart is empty</p>
+            <p class="text-xs mt-1">Explore our gadget collection to add items!</p>
+          </div>
+        `;
+        } else {
+          container.innerHTML = cart
+            .map(
+              (item) => `
+          <div class="flex gap-3 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-2xl border border-slate-100 dark:border-slate-800">
+            <img src="${item.image}" class="w-16 h-16 rounded-xl object-cover bg-white" alt="${item.name}">
+            <div class="flex-1 flex flex-col justify-between">
+              <div class="flex justify-between gap-1">
+                <h4 class="text-xs font-bold text-slate-800 dark:text-slate-100 line-clamp-1">${item.name}</h4>
+                <button onclick="updateQuantity('${item.id}', -999)" class="text-slate-400 hover:text-red-500">
+                  <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                </button>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-extrabold text-brand-600 dark:text-brand-400">$${(item.price * item.quantity).toFixed(2)}</span>
+                
+                <div class="flex items-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg">
+                  <button onclick="updateQuantity('${item.id}', -1)" class="p-1 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-l-lg">
+                    <i data-lucide="minus" class="w-3 h-3"></i>
+                  </button>
+                  <span class="px-2 text-xs font-semibold">${item.quantity}</span>
+                  <button onclick="updateQuantity('${item.id}', 1)" class="p-1 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-r-lg">
+                    <i data-lucide="plus" class="w-3 h-3"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `,
+            )
+            .join("");
+        }
+
+        lucide.createIcons();
+      }
+
+      function openCartDrawer() {
+        document
+          .getElementById("cart-drawer-backdrop")
+          .classList.remove("hidden");
+        setTimeout(() => {
+          document
+            .getElementById("cart-drawer-backdrop")
+            .classList.remove("opacity-0");
+          document
+            .getElementById("cart-drawer")
+            .classList.remove("translate-x-full");
+        }, 10);
+      }
+
+      function closeCartDrawer() {
+        document
+          .getElementById("cart-drawer")
+          .classList.add("translate-x-full");
+        document
+          .getElementById("cart-drawer-backdrop")
+          .classList.add("opacity-0");
+        setTimeout(() => {
+          document
+            .getElementById("cart-drawer-backdrop")
+            .classList.add("hidden");
+        }, 300);
+      }
+
+      // --- STREAMING_CHUNK:Checkout & Auth Modal Flow ---
+      function initiateCheckoutFlow() {
+        if (cart.length === 0) {
+          showToast("Your cart is empty! Add items before checkout.", "error");
+          return;
+        }
+
+        closeCartDrawer();
+
+        // Check if logged in
+        if (!currentUser) {
+          pendingCheckout = true;
+          openAuthModal("login", "Sign in to complete order");
+        } else {
+          openCheckoutModal();
+        }
+      }
+
+      function openAuthModal(mode = "login", title = "Welcome to TechHaven") {
+        authMode = mode;
+        document.getElementById("auth-modal-title").textContent = title;
+
+        const nameGroup = document.getElementById("name-field-group");
+        const submitBtn = document.getElementById("auth-submit-btn");
+        const toggleBtn = document.getElementById("auth-toggle-btn");
+        const toggleText = document.getElementById("auth-toggle-text");
+
+        if (authMode === "signup") {
+          nameGroup.classList.remove("hidden");
+          submitBtn.textContent = "Create Account & Continue";
+          toggleText.textContent = "Already have an account?";
+          toggleBtn.textContent = "Log In";
+        } else {
+          nameGroup.classList.add("hidden");
+          submitBtn.textContent = "Sign In & Continue";
+          toggleText.textContent = "Don't have an account?";
+          toggleBtn.textContent = "Create Account";
+        }
+
+        document
+          .getElementById("auth-modal-backdrop")
+          .classList.remove("hidden");
+        document.getElementById("auth-modal-backdrop").classList.add("flex");
+      }
+
+      function closeAuthModal() {
+        document.getElementById("auth-modal-backdrop").classList.add("hidden");
+        document.getElementById("auth-modal-backdrop").classList.remove("flex");
+      }
+
+      function toggleAuthMode() {
+        authMode = authMode === "login" ? "signup" : "login";
+        openAuthModal(
+          authMode,
+          authMode === "login"
+            ? "Sign in to complete order"
+            : "Create a new account",
+        );
+      }
+
+      function handleAuthSubmit(e) {
+        e.preventDefault();
+        const email = document.getElementById("auth-email").value;
+        const name =
+          authMode === "signup"
+            ? document.getElementById("auth-name").value || "Customer"
+            : email.split("@")[0];
+
+        saveUserToStorage({ email, name });
+        closeAuthModal();
+
+        showToast(`Welcome, ${name}! Logged in successfully.`);
+
+        if (pendingCheckout) {
+          pendingCheckout = false;
+          openCheckoutModal();
+        }
+      }
+
+      function simulateGoogleLogin() {
+        saveUserToStorage({
+          email: "alex.shopper@gmail.com",
+          name: "Alex Shopper",
+        });
+        closeAuthModal();
+        showToast("Logged in via Google!");
+
+        if (pendingCheckout) {
+          pendingCheckout = false;
+          openCheckoutModal();
+        }
+      }
+
+      function logoutUser() {
+        saveUserToStorage(null);
+        showToast("Logged out successfully.");
+      }
+
+      function openCheckoutModal() {
+        const subtotal = cart.reduce(
+          (sum, item) => sum + item.price * item.quantity,
+          0,
+        );
+        document.getElementById("checkout-user-email").textContent = currentUser
+          ? currentUser.email
+          : "Guest";
+        document.getElementById("checkout-subtotal").textContent =
+          `$${subtotal.toFixed(2)}`;
+        document.getElementById("checkout-total").textContent =
+          `$${subtotal.toFixed(2)}`;
+
+        document
+          .getElementById("checkout-modal-backdrop")
+          .classList.remove("hidden");
+        document
+          .getElementById("checkout-modal-backdrop")
+          .classList.add("flex");
+      }
+
+      function closeCheckoutModal() {
+        document
+          .getElementById("checkout-modal-backdrop")
+          .classList.add("hidden");
+        document
+          .getElementById("checkout-modal-backdrop")
+          .classList.remove("flex");
+      }
+
+      function handlePlaceOrder(e) {
+        e.preventDefault();
+        closeCheckoutModal();
+
+        // Clear cart
+        cart = [];
+        saveCartToStorage();
+
+        // Show Order Success Message
+        showToast(
+          "🎉 Order Placed Successfully! Tracking details sent to email.",
+        );
+      }
+
+      // --- STREAMING_CHUNK:Product Preview Modal ---
+      function openProductModal(productId) {
+        const product = PRODUCTS.find((p) => p.id === productId);
+        if (!product) return;
+
+        const container = document.getElementById("product-modal-content");
+        container.innerHTML = `
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+          <div class="aspect-square rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-800">
+            <img src="${product.image}" class="w-full h-full object-cover" alt="${product.name}">
+          </div>
+          <div>
+            <span class="text-xs font-semibold text-brand-600 uppercase tracking-wider">${product.category}</span>
+            <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100 mt-1">${product.name}</h2>
+            <div class="flex items-center gap-2 text-xs text-amber-500 font-semibold my-2">
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400 stroke-amber-400"></i>
+              <span>${product.rating} / 5.0 (${product.reviews} customer reviews)</span>
+            </div>
+            <p class="text-sm text-slate-600 dark:text-slate-300 my-4 leading-relaxed">${product.description}</p>
+            <div class="text-2xl font-extrabold text-slate-900 dark:text-white mb-6">$${product.price.toFixed(2)}</div>
+            <div class="flex gap-3">
+              <button 
+                onclick="addToCart('${product.id}'); closeProductModal();" 
+                class="flex-1 py-3 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl transition flex items-center justify-center gap-2"
+              >
+                <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                Add to Cart
+              </button>
+              <button 
+                onclick="addToCart('${product.id}'); closeProductModal(); initiateCheckoutFlow();" 
+                class="flex-1 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-semibold rounded-xl hover:opacity-90 transition"
+              >
+                Buy Now
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+
+        lucide.createIcons();
+        document
+          .getElementById("product-modal-backdrop")
+          .classList.remove("hidden");
+        document.getElementById("product-modal-backdrop").classList.add("flex");
+      }
+
+      function closeProductModal() {
+        document
+          .getElementById("product-modal-backdrop")
+          .classList.add("hidden");
+        document
+          .getElementById("product-modal-backdrop")
+          .classList.remove("flex");
+      }
+
+      // --- STREAMING_CHUNK:Filtering & Toast Helpers ---
+      function filterCategory(category) {
+        activeCategory = category;
+        renderCategoryPills();
+        renderProducts();
+      }
+
+      function handleSearch(val) {
+        searchQuery = val;
+        renderProducts();
+      }
+
+      function toggleDarkMode() {
+        const isDark = document.documentElement.classList.toggle("dark");
+        document
+          .getElementById("theme-icon-dark")
+          .classList.toggle("hidden", !isDark);
+        document
+          .getElementById("theme-icon-light")
+          .classList.toggle("hidden", isDark);
+      }
+
+      function showToast(message, type = "success") {
+        const container = document.getElementById("toast-container");
+        const toast = document.createElement("div");
+
+        const bgColor =
+          type === "error"
+            ? "bg-red-600"
+            : "bg-slate-900 dark:bg-white text-white dark:text-slate-900";
+
+        toast.className = `px-4 py-3 rounded-xl shadow-xl text-xs font-semibold flex items-center gap-2 fade-in pointer-events-auto ${bgColor}`;
+        toast.innerHTML = `
+        <i data-lucide="${type === "error" ? "alert-circle" : "check-circle"}" class="w-4 h-4"></i>
+        <span>${message}</span>
+      `;
+
+        container.appendChild(toast);
+        lucide.createIcons();
+
+        setTimeout(() => {
+          toast.style.opacity = "0";
+          toast.style.transition = "opacity 0.3s ease";
+          setTimeout(() => toast.remove(), 300);
+        }, 3000);
+      }
+    </script>
+  </body>
+</html>

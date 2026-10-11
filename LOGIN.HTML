@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login & Sign Up</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="/L&S.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="form-container">
+        <!-- Login Form -->
+        <form id="loginForm" class="form active">
+          <h2>Welcome Back!</h2>
+          <p>Glad to see you again!</p>
+          <label for="loginEmail" class="field-label">Email</label>
+          <input
+            type="email"
+            id="loginEmail"
+            placeholder="johnsamuel55@gmail.com"
+            required />
+          <div class="password-field">
+            <label for="loginPassword" class="field-label">Password</label>
+            <input
+              type="password"
+              placeholder="******"
+              id="loginPassword"
+              required />
+          </div>
+          <div class="options">
+            <label><input type="checkbox" /> Remember Me</label>
+            <a href="#">Forgot Password?</a>
+          </div>
+          <button type="submit" class="btn">Login</button>
+          <div class="social">
+            <p>or continue with</p>
+            <button type="button" class="google">
+              <img src="/google.png" alt="" class="google-pic" />
+            </button>
+            <button type="button" class="apple">
+              <img src="/apple-logo.png" alt="" class="apple-pic" />
+            </button>
+          </div>
+          <p class="auth-switch">
+            Don't have an account? <a href="#signup">Sign up here</a>
+          </p>
+        </form>
+
+        <!-- Sign Up Form -->
+        <form id="signupForm" class="form">
+          <h2>Create Account</h2>
+          <p>Join us today, it's free!</p>
+          <label for="signupName" class="field-label">Full Name</label>
+          <input
+            type="text"
+            id="signupName"
+            placeholder="Samuel John"
+            required />
+          <label for="signupEmail" class="field-label">Email</label>
+          <input
+            type="email"
+            id="signupEmail"
+            placeholder="johnsamuel55@gmail.com"
+            required />
+          <div class="password-field">
+            <label for="signupPassword" class="field-label">Password</label>
+            <input
+              type="password"
+              id="signupPassword"
+              placeholder="******"
+              required />
+          </div>
+          <div class="password-field">
+            <label for="confirmPassword" class="field-label"
+              >Confirm Password</label
+            >
+            <input
+              type="password"
+              id="confirmPassword"
+              placeholder="******"
+              required />
+          </div>
+          <p class="terms">
+            By signing up, you agree to our
+            <a href="#">Terms &amp; Privacy Policy</a>.
+          </p>
+          <button type="submit" class="btn signup">Sign Up</button>
+          <div class="social">
+            <p>or sign up with</p>
+            <button type="button" class="google">
+              <img src="/google.png" alt="" class="google-pic" />
+            </button>
+            <button type="button" class="apple">
+              <img src="/apple-logo.png" alt="" class="apple-pic" />
+            </button>
+          </div>
+          <p class="auth-switch">
+            Already have an account? <a href="#login">Login here</a>
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <script src="/l&s.js"></script>
+  </body>
+</html>
